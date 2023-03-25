@@ -37,5 +37,29 @@ it("Sets the owner", async ()=>{
 
 //})
 
+
+describe("Listing",()=>{
+  let transaction;
+
+  beforeEach(async ()=>{
+    transaction = await pazzon.connect(deployer).list(
+      1,
+      "Shoes",
+      "Clothing",
+      "ImageURL",
+      1,
+      4,
+      5
+    )
+
+    await transaction.wait();
+  })
+  
+  it("Returns item attributes", async()=>{
+    const item = await pazzon.items(1);
+    expect(item.id).to.equal(1);
+  })
+})
+
 })
 })
