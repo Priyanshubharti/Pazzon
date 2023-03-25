@@ -20,6 +20,13 @@ contract Pazzon {
     }
     mapping(uint256 => Item) public items;
 
+    event List(string name, uint256 cost, uint256 quantity);
+
+    modifier onlyOwner(){
+      require(msg.sender == owner);
+      _;
+    }
+
     constructor(){
     //    name = "Pazzon";
         owner = msg.sender;
@@ -34,12 +41,15 @@ contract Pazzon {
       uint256 _cost,
       uint256 _rating,
       uint256 _stock
-     ) public {
+     ) public onlyOwner {
           // Create Item struct...
           Item memory item = Item(_id, _name, _category, _image, _cost, _rating, _stock);
           
           // Save Item struct into blockchain...
            items[_id] = item;
+     
+          // Emits an event
+             emit List(_name, _cost, _stock);     
      }
 
 
