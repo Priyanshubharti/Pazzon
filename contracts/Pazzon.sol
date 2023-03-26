@@ -23,13 +23,16 @@ contract Pazzon {
     uint256 time;
     Item item;
    }
-
+    
+    // Mappings to map in blockchain...
   
     mapping(uint256 => Item) public items;
     mapping(address => uint256) public orderCount;
     mapping(address => mapping(uint256 => Order)) public orders;
+    
+    // Events that will be emitted...
 
-
+    event Buy(address buyer, uint256 orderId, uint256 itemId);
     event List(string name, uint256 cost, uint256 quantity);
 
     modifier onlyOwner(){
@@ -84,6 +87,8 @@ contract Pazzon {
     // Substract stock
     items[_id].stock = item.stock - 1;
      
+     // Emit event
+     emit Buy(msg.sender, orderCount[msg.sender], item.id);
 
     } 
  

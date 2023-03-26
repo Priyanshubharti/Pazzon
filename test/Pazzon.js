@@ -84,7 +84,7 @@ describe("Listing",()=>{
 })
 
 
-describe("Listing",()=>{
+describe("Buying",()=>{
   let transaction;
  
   //List an item...
@@ -105,13 +105,10 @@ describe("Listing",()=>{
     // Buy an item...
 
      transaction = await pazzon.connect(buyer).buy(ID,{value : COST})
+     await transaction.wait();
   })
 
-it("Updates the contract balance", async ()=>{
-  const result = await ethers.provider.getBalance(pazzon.address)
- // console.log(result)
-  expect(result).to.equal(COST)
-})
+
 
 it("Updates buyer's order count", async ()=>{
   const result = await pazzon.orderCount(buyer.address);
@@ -122,6 +119,16 @@ it("Adds the order", async ()=>{
   const order = await pazzon.orders(buyer.address, 1)
   expect(order.time).to.greaterThan(0);
   expect(order.item.name).to.equal(NAME);
+})
+
+it("Updates the contract balance", async ()=>{
+  const result = await ethers.provider.getBalance(pazzon.address)
+ // console.log(result)
+  expect(result).to.equal(COST)
+})
+
+it("Emits Buy Event", ()=>{
+  expect(transaction).to.emit(pazzon, "Buy")
 })
 
 })
