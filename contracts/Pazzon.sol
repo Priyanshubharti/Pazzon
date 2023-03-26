@@ -18,7 +18,17 @@ contract Pazzon {
      uint256 rating;
      uint256 stock;
     }
+
+   struct Order{
+    uint256 time;
+    Item item;
+   }
+
+  
     mapping(uint256 => Item) public items;
+    mapping(address => uint256) public orderCount;
+    mapping(address => mapping(uint256 => Order)) public orders;
+
 
     event List(string name, uint256 cost, uint256 quantity);
 
@@ -55,8 +65,31 @@ contract Pazzon {
 
 
     //Buy Products....
+ 
+  // Receive a Crypto (it is done as modifier "payable" is used.)....
+
+    function buy(uint256 _id) public payable{
+    // Fetch item
+    Item memory item = items[_id];
 
 
+    // Create an Order...
+
+     Order memory order = Order(block.timestamp, item);
+     
+     // Add Order for user
+     orderCount[msg.sender]++;
+     orders[msg.sender][orderCount[msg.sender]] = order;
+
+    // Substract stock
+    items[_id].stock = item.stock - 1;
+     
+
+    } 
+ 
+
+
+ 
 
     //Withraw Funds....
 
