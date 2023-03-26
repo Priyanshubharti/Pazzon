@@ -75,6 +75,12 @@ contract Pazzon {
     // Fetch item
     Item memory item = items[_id];
 
+    // Require enough ether to buy item....
+     require(msg.value >= item.cost);
+
+    // Require item is in stock....
+     require(item.stock > 0);
+
 
     // Create an Order...
 
@@ -94,10 +100,12 @@ contract Pazzon {
  
 
 
+   // Withraw Funds....
  
-
-    //Withraw Funds....
-
+    function withdraw() public onlyOwner{
+      (bool success, ) = owner.call{value: address(this).balance}("");
+      require(success);
+    }
 
 
 }
