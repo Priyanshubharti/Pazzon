@@ -4,6 +4,10 @@ const tokens = (n) => {
   return ethers.utils.parseUnits(n.toString(), 'ether')
 }
 
+web3.eth.net.getId()
+.then(console.log);
+
+
 // Global List Variables....
 const ID = 1;
 const NAME = "Shoes";
